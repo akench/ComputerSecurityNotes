@@ -1,0 +1,11 @@
+1) A shellcode is just any arbitrary piece of code that the attacker will run when exploiting a software.
+
+2) A NOP sled is a series of No-op instructions that are placed before your shellcode, in the stack. This is useful when it is unknown where exactly the function will return to on the stack.
+
+3) A gadget is a short series of assembly instruction that ends in ret. These can be chained together to execute arbitrary code.
+
+4) 
+1. Database firewalls will filter out suspicious queries from being executed, based on how many invalid queries the host sent.
+2. Parametrized statements can be used to insert variables in queries instead of appending the entire user input to the query. This will reject arbitrary SQL fragments.
+3. Escaping any special characters in the input can prevent input from being interpreted as SQL queries.
+4. Use pattern checking to see if the format of the input matches the expected data type.

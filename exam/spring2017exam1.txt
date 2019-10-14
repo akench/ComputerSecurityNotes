@@ -1,0 +1,44 @@
+1. Confidentiality is keeping your data from being read by unauthorized users
+   Integrity is keeping your data safe from being written by unauthorized users
+
+2 ....
+
+3. linux capabilities allow more fine tuned control of what processes have access
+to, so we can give a proc the minimal permissions it needs to run.
+
+4. biba constrains what data you can read, data integrity, doesn't care about
+what data is read by unauthorized users
+
+5. if off by one buffer overflow attack tries to write data to the return address,
+the stack canary can detect this because it will validate that the canary number
+was not overriten before returning
+
+6. d
+7. a
+8. d
+9. c
+10. b
+11. c
+12. c
+13. a
+14. a
+15. a
+16. b
+17. c
+18. c
+19. b
+20. d
+21. c
+22. d
+23. a
+24. b
+25. F
+26. F
+27. F
+28. T
+29. F
+30. F
+31. T
+32. T
+33. T
+34. T 

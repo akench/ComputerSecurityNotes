@@ -1,0 +1,193 @@
+confidentiality - who should haeva ccess
+privacy - what info can be shared with other
+privacy is reason for conf
+
+integrity = trustworthiness
+avaiability - obv
+
+threat model = diagram that shows flow of info in and out of program, identifies choke points
+
+secure system = mechanism + policy
+policy = what is allowed and not allowed
+mechanism = impl. for policy
+
+thread:
+1. disclosure = unauthorized data access
+2. deception = accepting false data as true, masquerading
+3. disruption = hindering operation of system
+4. usurpation = controlling some part of system
+
+TCB = trusted computing base
+system that ensures security
+
+authenticate = validate user identity
+authorize = let user access a resource
+
+
+user mode -> kernel mode
+1. trap instruction (system call)
+2. seg fault (accessing out of ur memory)
+3. hardware interrupt like a timer switching to kernel mode
+
+
+subject accesses objects
+
+owner,group,all
+user,group,other
+
+if you are the owner of the file
+    _only_ the owner permissions apply
+else if you are in the group that the file belongs to
+    _only_ the group permissions apply
+else 
+    the "other" permissions apply
+
+
+ACL = each object has list of perms 
+
+setuid, run file with perms of the file rather than perms of executing user
+
+access control matrix
+row = domain , group of subjcets
+col = object
+
+can also switch between domains
+or modify rights in any domain
+
+capability list 
+each subject has list of perms
+
+
+
+Discretionary access control
+user can change access to other files
+
+mandatory access control
+only admins can change access
+
+
+Bell La-padula
+confidentiality, constrain reading
+no read up, no write down
+don't read more secure data, don't corrupt less secure systems
+
+Simple security poilicy
+no read up
+
+star proprty
+no write down
+
+discretionary security poilicy
+discretionary on top of mandatory rules
+
+
+biba integrity model
+address data integrity
+constrain writing
+
+no write up, no read down
+
+
+Type enforcement
+mandatory access control has priority over discretional
+
+user group can access object group
+reduces access control matrix
+
+
+lattice based
+levels and compartments in each level
+
+
+chinese wall
+prevent conflict of interest
+
+
+
+fuzzing = randomly testing for buffer overflows
+
+DEP
+cannot execute code in stack
+
+ROP = return oriented programming
+libc contains a lot of code we can execute
+use gadgets to run arbitrary code
+
+
+ASLR
+randomize code location in libs
+
+
+LD_PRELOAD
+replace a system call with arbitrary code
+
+stack canary
+function cant return if buffer overflowed
+generate a random integer on stack and check that its still there before returning
+
+
+chroot
+change root dir of subprocess
+problems:
+user can still make system calls and get root access
+
+jailkit simplify chroot setup
+
+freeBSD jail
+like jails, but restrict operations on processes
+
+
+
+linux control group
+limit resources for each processes
+
+linux namespace
+better version of jails
+everything created is in a new namespace with restricted perms
+
+linux capability
+kernel has 4 capability sets for each proc
+what proc can do
+what perms are inherited when create new proc
+what perms its using rn
+what perms it might need temporarily (like for drivers)
+
+
+capabilities allow limited elevation of privileges
+
+containers have private proc namespace, network interface, own set of libs
+use copy on write file system
+so can see incremental changes, easy to revert
+
+AppArmor
+MAC based on pathname of files
+restrict access to files even within a namespace
+
+
+
+VIRTUALIZATION
+process virtual machines = virtual cpu (JVM)
+OS virtualization = feel like running on seperate OS
+system virtual machine = feel like on seperate system with its own OS
+ - cannot allow OS to access shared hardware like ports
+ - hyperviser (virtual machine monitor) mediates access to this
+ - hyperviser gives virtual device interface for memory, network, I/O
+
+hosted virtual machine (type 2 hypervisor)
+- computer has a primary OS
+- other guest OS are run in VMs
+
+native virtual machine
+- there is no primary OS on computer
+- hypervisor directly talks to the other OSs
+
+
+Application Sandboxing
+- restricted environment for executing code
+- more fine grained than namespaces
+- control what files an app can access, or what network protocols
+- rule based policy, which system calls are allowed
+
+System call interposition (hooking)
+- intercepting a system call and decide whether to allow
+

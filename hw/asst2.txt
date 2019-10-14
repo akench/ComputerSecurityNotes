@@ -1,0 +1,18 @@
+Question 1:
+a) chmod 006 testfile
+b) I cannot access the file because it is only accessible by members not in the group (other), and I am in the group.
+c) I can delete the file beause I have write access to the parent directory.
+
+Question 2:
+a) Compressing the users means you should compact the Access control matrix by using groups to manage the permissions of many users together, reducing the number of rows in the matrix.
+b) Compressing the rights means you should split up the columns into ACLs, which specify the permissions for only the given resource, or into capabilties, which specify permissions for the user.
+
+Question 3:
+1. Since the system admin has root access, he can modify any file on the system, making it difficult to keep a secure audit trail
+2. There is no easy way to implement access triplets (user,program,file)
+3. ACL are not good at representing mutable state
+4. Unix ACL only contains one user, so programmers often end up giving their programs too many permissions
+
+Question 4.
+a) The simple security property is that a process cannot read data that is of higher confidentiality. This is to maintain data confidentiality.
+b) *-property is that a process cannot write data to a lower confidentiality level. This is to maintain data integrity.

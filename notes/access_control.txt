@@ -1,0 +1,146 @@
+Processor can execute in different permission modes
+kernel mode and user mode
+kernel mode has OS perms
+
+Getting into kernel mode
+- instruction to do a software interrupt
+- a violation (illegal memory or instruction) can call OS
+- hardware interrupt (package arrives, timer rings)
+
+Protection rings hierarchy
+least privledge -> more privlegdge -> kernel
+NOT USED, too complicated
+
+
+Process operates in protection domain
+- context of permissions (accessing resource with a userid)
+- Can switch domains while running the process
+
+- only certain domains can switch to other domains,
+    - need to define privledges for that too
+- can delegate permissions to other domains
+
+
+Access Control List (column)
+Object -> access rights for all domains
+
+Capability Lists (row)
+Domain -> access rights for all object
+
+
+POSIX permission model
+- R,W,X access is independent
+- each file has owner
+domains: owner, group (group that file belongs to), everyone else
+Note: only permissions from one category apply (other perms not apply to owner)
+
+Linux uses both rwx bits and ACL
+
+
+
+umask,  turn bits off
+
+
+Principal of Least Privledge:
+At each abstraction layer, each subject only the needed resources
+limits scope of damage
+
+Privlidge seperation
+high and low privilege components
+real vs. effective userid
+setup communication b/w high and low privilege components
+setuid
+
+
+
+Why are ACL's bad?
+chmod o+rw secret.txt
+random users can give themselves read and write permission.
+
+
+DAC - discretionary access control
+domains can give info to other domains
+users in charge of access control
+
+Mac - mandatory access conrol
+policy is centrally controlled
+admins are in charge
+
+
+
+Bell LaPadula model CLEARANCE
+hierarchy for classification
+no reading from higher clearance
+    low programs cant read high data
+no writing to lower clearance
+    high programs cant put unsafe data in low programs
+Purpose: confidentiality
+
+
+Role based access control
+- based on job function, have access to diff things
+- hierarchy works well in gov. but not in private companies
+
+
+Biba integrity
+Purpose: ensure data integrity CORRUPTION
+Inverted...
+cannot read from lower integrity level
+    - cannot be corrupted by less "pure" data
+cannot write to higher integrity level
+    - cannot contaminate more "pure" data
+cannot request higher access
+
+
+
+Multi-lateral security
+each security level can have seperate compartments
+
+Chinese Wall model
+Compartmentalization of roles within same company
+if access pepsi, cannot access coke
+
+======================
+txtbook
+
+Access Control Levels
+
+1. Application = certain roles in application can do certain operations
+2. Middleware = DBMS, example, debit on one account = credit on another.
+3. OS controls access to files
+4. Hardware and memory restrict access to certain memory segments
+
+
+Should prevent programs from interfering with each other
+Sandboxing = application level control, run in browser
+Virtualization = runs in OS
+Trusted computing = project to run another VM that is more secure alongside normal VM, to do crypto shit
+
+1. Access Control Matrix
+row = user, col = resource
+Can also have a row for a specific program
+
+very space inefficient
+
+How to compact?
+1. Compress users
+    use groups to manage permissions of many users
+2. Compress rights
+    Access Control List (ACL)
+    - Map from resource to list of authorized users
+
+ACL are used in data-oriented protection
+- not useful with many, changing users & auth delegation
+
+ACL only has name of users, not programs, so cannot do triples (user,program,file)
+Unix has suid (set-user-id), allowing program to run with privilege of owner
+Normally, the program being run inherits permissions of user, but with setuid it will get perms of owner
+
+
+
+Mandatory Access Control (MAC)
+data can be read if principal level >= data level
+
+TCB = trusted computing base
+- the failure of these components could breach the whole system
+

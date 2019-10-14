@@ -1,0 +1,40 @@
+Question 1:
+A security theatre is when an organization just puts on the appearance 
+of having a secure system rather than actually implementing effective mechanisms
+to mitigate security vulnerabilities. This causes users to FEEL like there is
+improved security, but does not have any concrete security benefits.
+
+
+Question 2:
+A principal is just an entity (a subcomponent) in a security system. This can include
+people, piece of equipment, communications channels, or a combination of other principals. 
+On the other hand, a subject is a physical person such as a human, or it can include
+a legal entity such as a government. 
+
+
+Question 3:
+A trusted system is any system which if it fails, has the ability to compromise the 
+security of the system. A trustworthy system is a system which we can trust to never fail
+and to always keep the system secure. 
+
+
+Question 4:
+1) Problem of anonymity = With the way the internet was designed, it is really easy to stay 
+                        anonymous, making it easier for attackers to stay hidden.
+2) Difficulty of distinction = It is hard to distinguish different types of attacks before they
+                        are actually executed.
+3) Power asymmetries = Small nations with a tiny military can use cyber warfare to attack larger powers.
+
+
+Question 5:
+Scams with a miniscule chance of success are still deployed because it costs the scammer
+almost nothing to send out the email messages. Enough people must fall for the scams that 
+the scammer is making a profit.
+
+
+Question 6:
+Policy = What is supposed to be achieved (which security vulnerability should be mitigated?)
+Mechanism = The means of executing the policy (things like ciphers and access control)
+Assurance = How much you can rely on a part of the mechanism to work properly
+Incentive = The incentive for defenders of the security system to properly defend, and the
+            incentive for attackers to gain access to the system

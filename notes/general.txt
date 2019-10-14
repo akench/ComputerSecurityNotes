@@ -1,0 +1,64 @@
+https://www.cl.cam.ac.uk/~rja14/book.html
+
+CIA triad
+1) Confidentiality       Keep data & resources hidden
+                         hide the fact that communication is happening
+
+Privacy             limit sharing of info, control how ur information is used
+                    This is why we want Confidentiality
+Secrecy             ability to send messages so no one else can see
+                    used to implement Confidentiality
+
+ex- not everyone should have access to rutgers servers
+
+2) Integrity           
+Types of Integrity
+- Data = data is not changed
+- Origin = data is authenticated from the correct source
+- System = Does everything work as expected? Make sure system was not infiltrated
+
+ex- sign in with netid
+
+3) Availability
+Being able to use system or resources
+Ddos attack
+firewall, OS resource management, backups, etc...
+
+ex- servers shouldn't go down
+
+policy = what is or isn't allowed
+mechanism = impl. and enforce policies
+
+
+
+disclosure = unauthorized access to data, snooping
+deception = accepting false data, injecting data
+disruption = interrupting correct operation, Ddos
+usurpation = unauthorized control of system
+
+
+fan = fz110@rutgers.edu
+wed 3-5, core 331t
+
+TCB = trusted computing base
+components that are imp. to security
+
+=================================
+
+policy = what to achieve
+mechanism = cipher, access control, policy implementation
+assurance = how much you can rely on one part of system
+incentive = incentive for defenders to defend and attackers to attack
+
+Security theatre = showing off high security instead of implementing
+effective mechanisms. Provides feeling of security
+
+principal = entity that participates in security system
+            person, equipment, communications channel
+            subcomponent of a system
+            principal can also be a combination of other principals
+subject = person, can also be a principal (person can be part of a system)
+group = set of principals
+role = functions assumed by persons
+
+

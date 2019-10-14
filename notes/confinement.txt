@@ -1,0 +1,70 @@
+chroot - origin of commitment
+syscall that process runs, give a file path
+any child processes will see the above file path as the root dir, confining these processes
+
+Jailkit
+utils that build a chroot jail
+copies in libraries and other files into jail
+
+doesnt work because user can become root and make sys calls
+
+===
+FreeBSD jails
+limit root powers
+all or nothing approach..
+
+linux namespace
+set of processes have a custom view of PIDs, network devices, etc.
+
+linux capabilities
+restrict what root can do in a namespace
+
+Linux control group
+limit the amount of resources a process tree can use
+
+
+namespace + cgroup + capabilities = virtualization
+
+
+Containers:
+changes in one application shouldnt affect other application
+simplify software deployment
+
+
+Docker, platform as a service
+docker img = package containing application and libs
+configure environment, instead of VM
+
+Kubernetes
+orchestrate docker
+handle horizontal scaling and load balancing
+
+containers use namespace, restrict capabiity and isolation
+containers are minimal, so fewer things to attack
+seperate policy from enforcement (?)
+container can restart automatically
+
+warnings:
+maybe escape the containers
+DoS attack from container
+network spoofing
+
+not a virtual machine, so share same kernel
+
+
+virtual machine monitor - hypervisor
+in charge of giving every OS the illusion that it has all the hardware
+mediate access to hardware
+manages multiple OS
+
+when OS tries to do something,
+hyperviser intercepts it, it emulates what the OS wanted to do
+return a trap
+trap is a exception when the guest OS doesnt have permission to run an instruction
+
+
+
+Sandboxing
+
+System call interposition
+intercept every system call, approve/deny

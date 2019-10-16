@@ -1,0 +1,14 @@
+1a) The match for pattern1 will match code for the unix "login" command.
+1b) Bug 1 will miscompile the login command so that a known password will also be accepted, in addition to the correct password.
+1c) The second pattern is to match the C compiler, so Trojan horses can be injected into the C compiler.
+1d) Bug 2's purpose is to generate a bugged C compiler which will insert a Trojan virus into the login command without a trace, after reverting the source code for the compiler.
+
+2) Wheeler proposes to compile the source code of a compiler, with two different compilers. Now you have two executables that have functionally equivalent ways of compiling. Now use these two compilers to compile the original source code again. If the result of these two is different, one compiler was infected.
+
+3) The main disadvantage of signature based anti-viruses is that they can't detect old malware with slightl modifications.
+
+4) Malware packers can do a bitwise-XOR, compress, or encrypt the malware.
+
+5) Packed malware is more difficult to detect because the representation of the malware code is different, and possibly unrecognizable.
+
+6) If a malware has no direct access to the internet, it can communicate more covertly by using DNS lookups, allowing us to indirectly communicate with the internet.

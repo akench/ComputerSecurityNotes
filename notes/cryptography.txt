@@ -1,0 +1,69 @@
+whats the point lol?
+authentication - determine origin of msg
+integrity - msg was not modified
+nonrepudiation - clients cant claim that they didnt send the msg
+confidentiality - msg is secret
+
+
+ciphertext = encrypted plaintext
+
+secret algorithms won't work (has no key)
+shared algo and secret key is better
+
+
+ciphertext should look like random values
+- stat analysis shouldnt work
+key should be large, to prevent brute force
+
+
+symmetric cipher
+same key is used to encrypt and decrypt
+
+
+exclusive or used in combinatronic cryptography
+exclusive or is non destructive
+- u can tell what the two inputs were
+- with and, cant tell what both inputs are
+
+
+
+onetimepad
+len(key) == len(text)
+
+problem: key is pretty big
+keys have to be randomly generated
+
+
+stream ciphers
+never reuse key, since can determine key using plaintext and ciphertext
+
+
+block cipher
+encrypt a chunk of bits at a time
+usually iterative (multiple rounds)
+each round generates a subkey
+
+each round has substitution and permutation
+
+confusion vs diffusion?
+
+
+triple DES
+middle step for encryption
+to make more secure
+slow
+
+
+
+AES
+variable size key
+variable # of rounds (smaller key, less rounds)
+
+round = byte substitution -> shift rows (permutation) -> 
+        mix columns (perm) -> XOR round key (subs) 
+
+good
+- bigger block and key size
+- faster than DES
+- written in software
+

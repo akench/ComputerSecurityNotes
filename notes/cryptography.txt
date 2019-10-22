@@ -67,3 +67,87 @@ good
 - faster than DES
 - written in software
 
+
+
+==============================
+TEXTBOOK notes:
+
+vigenere
+plain text and offset by key text.
+repeated patterns will occur at multiples of key length
+
+onetimepad
+key length = text length
+no repeating patterns
+
+ideal
+1 bit change -> change half of bits
+diffuse the change 
+
+one way encoding
+
+
+asymmetric
+different key for encryption and decryption
+
+-=====================
+block cipher
+each key has a single independent permutation
+C = M_k
+
+known plaintext attack
+- given inputs and outputs for same key
+
+chosen plaintext attack
+- attacker gets to make the queries
+
+related key attack
+- can make queries that is answered usign a related key such as K+1 or K+2
+
+
+=============
+public key encryption
+will encrypt for anyone, but only key owner can decrypt
+
+public key can encrypt
+private key can decrypt
+
+======
+digital signature
+created by one
+
+====
+fiestel cypher
+l xor f(r)
+switch l and r
+
+===============
+trapdoor
+1324354231 is sum of two primes
+hard to reverse
+if one number is 5352 (secret key), easy to find other num
+
+RSA encryption
+start with two large prime numbers, and multiply
+
+secure b/c hard to factor prime numbers
+
+=============
+Diffie Hellman
+not encryption, just generates keys
+
+==========
+Message authentication control
+encrypted hash for integrity
+
+cypher block chaining
+
+===============
+public key cryptography
+digital signature created with own private key
+message with a signature must have come from only one source
+
+decrypt the signature using the public key (?) and verify that this
+hash matches the hash of message
+
+    

@@ -1,0 +1,10 @@
+1) Perfect secrecy means there is no way to observe any patterns in the cipher text to find out the plain text.
+2) Robert hooke sorted all the letters of his theorem into alphabetical order. This is a one way function because there is no way to know what the original text was, with 100% certainty.
+3)  1. Hash functions are one-way functions. 
+    2. Hash function output should give 0 information about input
+    3. If the output is long enough, hash collisions are very unlikely.
+
+4) A trapdoor one-way permutation is a computation that anyone can perform, but can only be reversed using the secret key.
+
+5) Confusion is adding unknown key values and diffusion is spreading the data in the plaintext throughout the entire ciphertext.
+6) An S-box is a lookup table used to transform (substitute) input bits into output bits.

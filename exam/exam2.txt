@@ -1,0 +1,257 @@
+Malware
+spyware, adware, ransomware
+command-and-control server
+    - sit dormant and wait for instructions from coordinator
+    - can coordinate a DDOS attack
+
+
+Why install malware?
+- steal password, spying, steal data, get computing power, ransom
+
+
+Zero day vul.
+- found exploit that isn't known to company
+
+n-day vul.
+- known exploit that hasn't been patched
+
+
+Pretexting = make user think you are someone ur not
+
+
+VIRUS
+- attaches to some other software
+- not an indep. process
+- executed along with another program
+
+worm
+- standalone process 
+
+
+MALWARE COMPONENTS
+1. infection mechanism 
+    - how it spreads
+2. payload
+    - malicious, does harm like upload data, delete stuff, ask command and control service
+3. Trigger
+    - logic bomb, run whenever host program is run, decides whether or not to run payload
+
+File infector virus
+- adds itself onto executable program
+- control flows to virus, file length is unchanged to reduce suspicion
+
+Bootloader malware (boot sector virus)
+- installs onto master boot record on disc
+- when starting os, first section of bootable storage device is run. Virus goes here
+- ransomware can do this
+
+Autorun
+- autoruns program on flashdrive
+
+
+USB firmware
+- virus could present the usb as a keyboard and send keystrokes to laptop
+
+
+Rootkit
+- User rootkit = replace 'ls' with command that hides a file or process (user rootkit)
+- Kernel rootkit = has access to all system resources. Can modify system calls
+- Hypervisor rootkit = sits below OS, add hypervisor onto computers that don't use it. OS doesn't know that its commands r going thru a hypervisor
+
+
+
+Signature based antivirus
+- look for byte sequences in common malware
+- signature of malware
+
+behavior based
+- sandbox the program and look for suspicious behavior
+
+
+Counter measures
+- For signature based = Packing
+    - compress/encrypt the code (XOR with some pattern)
+
+
+
+
+restricted cipher
+secret algo, no key
+
+symmetric cipher = key for encrypt and decrypt
+
+
+GOOD ciphers?
+seem like random values
+
+
+Polyalphabetic substitution ciphers
+character substitution changes after n characters
+
+ Vigenère cipher - 
+ repeating key
+ my plaintext hihi
+ dogdogdogdogdogdog
+
+
+onetimepad
+- random key is as long as plaintext
+- not useful b/c hard to transport key securely
+- provides perfect secrecy
+
+
+Stream cipher
+- simulates a onetimepad
+- pseudorandom number generator, starts with a seed 
+- same seed -> same key
+- not truly random, so not secure 
+
+
+Rotor machine
+- implement polyalphabetic substitution cipher
+- number of alphabets = c^r , c = num chars and r = num rotors
+
+
+Transposition cipher
+- scrambles of plaintext
+- decryption = unscramble
+- 
+
+Block cipher
+- encrypt chunks at a time, use same key each time
+
+Iterative cipher
+- iterate over several rounds
+- round key is derived from main key 
+- goes thru substitution-permutation network
+- confusion and diffusion
+
+
+Feistel cipher
+- form of block cipher, split block in 2 parts
+- do SP stuff on one block and XOR with other part, then swap the parts and repeating
+
+DES
+- uses feistel cipher
+- uses only 55 bit key, so small
+
+AES
+larger block size
+larget key
+
+
+
+Cipher block chaining
+- before encryption, data block XORd with prev ciphertext
+- when decrypting, need initialization vector
+- not more secure, hard to mess with
+
+
+
+public key encryption
+- encrypt with public, decrypt with private
+
+
+RSA:
+c = m^e % n
+m = plaintext, e = key, n = product of two primes
+
+
+assymmetric (RSA/ECC) doesnt have to transport a key like symmetric
+but its too slow, 
+how can we combine the two?
+
+session key
+- encrypt random key with public key
+- then use symmetric algo and encrypt with the above result
+
+
+Key exchange
+- send key with public encryption
+- trusted third party
+
+Trusted third party
+- has everyone's keys
+- Alice asks Trent for a session key, this is encrypted in alice private key, so trent knows only alice sent the message
+- alice gets session key and bob's key
+- alice sends key to bob, bob knows alice asked trent.
+
+replay attacks
+
+Needham-schroder algo
+- prevent replay attacks
+- send a nonce
+
+Denning-Sacco modification: timestamps to avoid key replay
+
+Otway-Rees protocol: session IDs instead of timestamps
+
+
+Forward secrecy
+- compromise of a key doesnt expose past session keys
+
+
+cryptographic hash fnction
+- one way func
+- output is fixed number of bits for any input
+
+merkle tree
+- leaf node = hash pointer to data block
+- non leaf = hash of left and right
+- locate data in log n time
+
+
+MAC = message authentication codes
+- prevent attacker from modifying hash
+- hash relies on key for validation
+- hash based MAC 
+    - need key to hash
+- block cipher based MAC
+    - use a key to do block encryption on blockchain.
+    - different data will go to different hash
+
+
+digital signature is the opposite of public key encryption
+public key enc
+- encrypt w/ public key, decrypt with private key
+
+signature
+- encrypt (sign) w/ private key, verify with public key
+- anyone can verify
+- nonrepudiation
+
+
+
+How to know you have the right person's public key? (for signature verification)
+- Certificate has user info (distinguished name) and user's public key
+- Hash all this, encrypt with private key to create signature
+
+validation:
+- hash certificate data and compare with decrypted signature: these should match
+- public key is stored in another certificate which is also signed
+
+
+identification = asking the user who they are
+authentication = proving that identification is correct
+authorization = can user do this operation?
+
+Authentication factors:
+something u have, something you know, something you are
+
+Dictionary attack = test common words and letter substitutions as passwords
+Precomputed hashes = store results of Dictionary attack
+- defend by salting password, adding random chars then hashing (salt is not secret)
+
+
+One-time passwords
+- sequence based = each password is function of prev password
+- challenge based = password is function of challenge provided by server
+    - challenge is some nonce that server sends to client
+    - hash the password and nonce, and send to server
+- time pased = function of time
+    - hash secret key and cur time
+
+
+
+robust = biometric data will not change
+distinct = how unique u are

@@ -1,0 +1,70 @@
+nonce = random bunch of bits
+
+Prove you have the key
+decrypt nonce using key
+
+
+Trusted third party
+alice tells trent (third party), that she wants to talk to bob
+- request session key from trent, send alice key
+
+trent checks if alice is allowed to talk to bob
+- trent sends alice, session key encrypted with alice key
+- also sends session key encrypted with bob key (called a ticket/sealed envelope)
+
+alice sends bob the sealed envelope
+
+bob knows that alice couldn't have generated it, since alice cant encrypt with bob's key
+he know trent must have allowed this, so bob can trust
+
+======
+Replay attack
+eavesdropper (Eve) is listening to everything
+eve can play the messages back later and make bob think he's talking to alice
+
+To avoid this
+- add a random number (nonce) with each request and verify that the same nonce is received
+
+but still vulnerable to session key attacks (if get old session key)
+
+======
+
+to fix this, add timestamp in every request
+or can use some random number with every request
+
+NOTE: session key is repeated across seperate interactions, random number and timestamp will change
+
+======
+Kerberos
+trusted third party
+
+sends session key and ticket (sealed envelope)
+
+======
+public key exchange
+
+get key, encrypt with alice private key
+encrypt entire thing with alice public key??
+
+=========
+Security
+something I know
+something I have
+something I am
+
+=========
+precomputed hashing
+
+get hashes of all common password
+when get hashed password, can check the entire data base instead of testing every password
+
+salting
+concatenate random string with hash
+salted+hashed is not gonna be in top 10000 precomputed hashes
+
+salting doesn't add Security, makes it harder to do precomputed hashing
+
+
+==========
+Guard against man in the middle attack
+

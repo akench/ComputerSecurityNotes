@@ -53,8 +53,7 @@ public class Cryptr {
         }
     }
 
-	private static Cipher createCipher(String secKeyFile, int mode, 
-			IvParameterSpec ivParameterSpec) throws Exception {
+    private static Cipher createCipher(String secKeyFile, int mode, IvParameterSpec ivParameterSpec) throws Exception {
         byte[] keyBytes = Files.readAllBytes(Paths.get(secKeyFile));
         SecretKeySpec skey = new SecretKeySpec(keyBytes, "AES");
 
@@ -75,6 +74,27 @@ public class Cryptr {
         return new IvParameterSpec(initializationVector);
     }
 
+    private static void processFile(Cipher ci, FileInputStream in, FileOutputStream out)
+            throws Exception {
+        // Now encrypt the contents of the original file
+        // TODO: try with diff buff size
+        byte[] inputBuf = new byte[1024];
+        int len;
+        while ((len = in.read(inputBuf)) != -1) {
+            byte[] outputBuf = ci.update(inputBuf, 0, len);
+
+            if (outputBuf != null) {
+                out.write(outputBuf);
+            }
+        }
+
+        byte[] outputBuf = ci.doFinal();
+
+        if (outputBuf != null) {
+            out.write(outputBuf);
+        }
+    }
+
     /**
      * Extracts secret key from a file, generates an initialization vector, uses
      * them to encrypt the original file, and writes an encrypted file containing
@@ -84,36 +104,20 @@ public class Cryptr {
      * @param secKeyFile    name of file storing secret key
      * @param encryptedFile name of file to write iv and encrypted file data
      */
-    static void encryptFile(String originalFile, String secKeyFile, String encryptedFile)
-            throws Exception {
+    static void encryptFile(String originalFile, String secKeyFile, String encryptedFile) throws Exception {
 
         IvParameterSpec ivParamSpec = createIvParamSpec();
         Cipher ci = createCipher(secKeyFile, Cipher.ENCRYPT_MODE, ivParamSpec);
 
-		try (FileInputStream in = new FileInputStream(originalFile);
-			 FileOutputStream out = new FileOutputStream(encryptedFile)) {					
-			// write the Init Vector to the beginning of the encrypted file
+        try (FileInputStream in = new FileInputStream(originalFile);
+                FileOutputStream out = new FileOutputStream(encryptedFile)) {
+            // write the Init Vector to the beginning of the encrypted file
             // so that it can be used when decrypting
             out.write(ivParamSpec.getIV());
-			
-            // Now encrypt the contents of the original file
-            // TODO: try with diff buff size 
-            byte[] inputBuf = new byte[1024];
-            int len;
-            while ((len = in.read(inputBuf)) != -1) {
-				byte[] outputBuf = ci.update(inputBuf, 0, len);
-				
-				if(outputBuf != null) {
-                    out.write(outputBuf);
-				}
-			}
-			
-			byte[] outputBuf = ci.doFinal();
-
-			if(outputBuf != null) {
-				out.write(outputBuf);
-			}
-		}
+            
+            // Now dump the encrypted contents to the output file
+            processFile(ci, in, out);
+        }
     }
 
     /**
@@ -125,11 +129,23 @@ public class Cryptr {
      * @param secKeyFile    name of file storing secret key
      * @param outputFile    name of file to write decrypted data to
      */
-    static void decryptFile(String encryptedFile, String secKeyFile, String outputFile) {
+    static void decryptFile(String encryptedFile, String secKeyFile, String outputFile)
+            throws Exception {
 
-        try (FileInputStream in = new FileInputStream(encryptedFile),
-             FileOutputStream)
+        try (FileInputStream in = new FileInputStream(encryptedFile);
+                FileOutputStream out = new FileOutputStream(outputFile)) {
 
+            // Construct the cipher object using the initialization
+            // vector, which is the first 16 bytes of the file.
+            byte[] iv = new byte[128 / 8];
+            in.read(iv);
+            IvParameterSpec ivParameterSpec = createIvParamSpec();
+            Cipher ci = createCipher(secKeyFile, Cipher.DECRYPT_MODE, ivParameterSpec);
+                    
+            // Decrypt the input stream (encrypted file) and 
+            // write to the outputFile using the specified Cipher.
+            processFile(ci, in, out);
+        }
     }
 
     /**

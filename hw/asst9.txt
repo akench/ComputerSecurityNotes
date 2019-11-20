@@ -1,0 +1,13 @@
+1. Inputs in a bitcoin transaction are references to previous transactions which show that the sender has the required funds to send a certain amount of bitcoin.
+
+2. It is necessary to have change because each input in a transaction must be fully spent, so any left over bitcoin is returned as change.
+
+3. Bitcoin nodes agree on the order of transactions by only using the longest available bitcoin chain. If multiple blocks arrive at the same time, eventually one will be longer, and will be marked as the "true" chain.
+
+4. An attacker needs to have control of 51% of the computing power to stand a good chance of performing a double-spending attack. Basically, an attacker will first spend bitcoin on the true blockchain. He will then spawn off his own private blockchain which does not include the previous transaction. Then, since the attacker has 51% of the computing power, his private blockchain will eventually be longer than the global blockchain. After broadcasting it, everyone else will switch to his blockchain, reversing record of the transaction.
+
+5. The same origin policy dictates that HTTP requests from a domain can only access resouces on the same domain. This prevents a malicious website from sending a request to the bank (a different domain) and stealing your money.
+
+6. DNS rebinding subverts the same origin policy because the browser only checks that the URL string is the same domain. DNS rebinding changes the IP address for this domain, which the browser can not detect. 
+
+7. Google's DNS rebinding protection blocks public domains from using private IP ranges. For example, this will prevent an external attacker from redirecting to your google home (which has its private IP in your local network).

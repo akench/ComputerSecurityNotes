@@ -22,8 +22,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.security.*;
+import java.security.spec.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -53,13 +58,31 @@ public class Cryptr {
         }
     }
 
-    private static Cipher createCipher(String secKeyFile, int mode, IvParameterSpec ivParameterSpec) throws Exception {
+    private static Cipher createCipherAES(String secKeyFile, int mode, IvParameterSpec ivParameterSpec)
+            throws Exception {
         byte[] keyBytes = Files.readAllBytes(Paths.get(secKeyFile));
         SecretKeySpec skey = new SecretKeySpec(keyBytes, "AES");
 
         Cipher ci = Cipher.getInstance("AES/CBC/PKCS5Padding");
         ci.init(mode, skey, ivParameterSpec);
 
+        return ci;
+    }
+
+    private static Cipher createCipherRSA(String secKeyFile, int mode) throws Exception {
+        byte[] keyBytes = Files.readAllBytes(Paths.get(secKeyFile));
+        EncodedKeySpec ks = (mode == Cipher.ENCRYPT_MODE) 
+                                ? new X509EncodedKeySpec(keyBytes) 
+                                : new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+
+        // if encrypting, generate the public key
+        Key key = (mode == Cipher.ENCRYPT_MODE) 
+                    ? kf.generatePublic(ks) 
+                    : kf.generatePrivate(ks);
+
+        Cipher ci = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        ci.init(mode, key);
         return ci;
     }
 
@@ -74,8 +97,7 @@ public class Cryptr {
         return new IvParameterSpec(initializationVector);
     }
 
-    private static void processFile(Cipher ci, FileInputStream in, FileOutputStream out)
-            throws Exception {
+    private static void processFile(Cipher ci, FileInputStream in, FileOutputStream out) throws Exception {
         // Now encrypt the contents of the original file
         // TODO: try with diff buff size
         byte[] inputBuf = new byte[1024];
@@ -107,14 +129,14 @@ public class Cryptr {
     static void encryptFile(String originalFile, String secKeyFile, String encryptedFile) throws Exception {
 
         IvParameterSpec ivParamSpec = createIvParamSpec();
-        Cipher ci = createCipher(secKeyFile, Cipher.ENCRYPT_MODE, ivParamSpec);
+        Cipher ci = createCipherAES(secKeyFile, Cipher.ENCRYPT_MODE, ivParamSpec);
 
         try (FileInputStream in = new FileInputStream(originalFile);
                 FileOutputStream out = new FileOutputStream(encryptedFile)) {
             // write the Init Vector to the beginning of the encrypted file
             // so that it can be used when decrypting
             out.write(ivParamSpec.getIV());
-            
+
             // Now dump the encrypted contents to the output file
             processFile(ci, in, out);
         }
@@ -129,8 +151,7 @@ public class Cryptr {
      * @param secKeyFile    name of file storing secret key
      * @param outputFile    name of file to write decrypted data to
      */
-    static void decryptFile(String encryptedFile, String secKeyFile, String outputFile)
-            throws Exception {
+    static void decryptFile(String encryptedFile, String secKeyFile, String outputFile) throws Exception {
 
         try (FileInputStream in = new FileInputStream(encryptedFile);
                 FileOutputStream out = new FileOutputStream(outputFile)) {
@@ -139,13 +160,14 @@ public class Cryptr {
             // vector, which is the first 16 bytes of the file.
             byte[] iv = new byte[128 / 8];
             in.read(iv);
-            IvParameterSpec ivParameterSpec = createIvParamSpec();
-            Cipher ci = createCipher(secKeyFile, Cipher.DECRYPT_MODE, ivParameterSpec);
-                    
-            // Decrypt the input stream (encrypted file) and 
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            Cipher ci = createCipherAES(secKeyFile, Cipher.DECRYPT_MODE, ivParameterSpec);
+
+            // Decrypt the input stream (encrypted file) and
             // write to the outputFile using the specified Cipher.
             processFile(ci, in, out);
         }
+
     }
 
     /**
@@ -156,9 +178,14 @@ public class Cryptr {
      * @param pubKeyFile name of public key file for encryption
      * @param encKeyFile name of file to write encrypted secret key
      */
-    static void encryptKey(String secKeyFile, String pubKeyFile, String encKeyFile) {
+    static void encryptKey(String secKeyFile, String pubKeyFile, String encKeyFile) throws Exception {
 
-        /* FILL HERE */
+        Cipher ci = createCipherRSA(pubKeyFile, Cipher.ENCRYPT_MODE);
+
+        try (FileInputStream in = new FileInputStream(secKeyFile);
+                FileOutputStream out = new FileOutputStream(encKeyFile)) {
+            processFile(ci, in, out);
+        }
 
     }
 
@@ -170,9 +197,14 @@ public class Cryptr {
      * @param privKeyFile name of private key file for decryption
      * @param secKeyFile  name of file to write decrypted secret key
      */
-    static void decryptKey(String encKeyFile, String privKeyFile, String secKeyFile) {
+    static void decryptKey(String encKeyFile, String privKeyFile, String secKeyFile) throws Exception {
 
-        /* FILL HERE */
+        Cipher ci = createCipherRSA(privKeyFile, Cipher.DECRYPT_MODE);
+
+        try (FileInputStream in = new FileInputStream(encKeyFile);
+                FileOutputStream out = new FileOutputStream(secKeyFile)) {
+            processFile(ci, in, out);
+        }
 
     }
 
